@@ -7,6 +7,7 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
+// Model Person
 type Person struct {
 	ID   uint   `json:"id"`
 	User string `json:"user"`
@@ -17,7 +18,8 @@ var people []Person
 var db *gorm.DB
 var err error
 
-func Login(user, pass string) bool {
+// Login
+func Login(user string, pass string) bool {
 	OpenConnection()
 	AutoMig()
 	var customer Person
@@ -30,6 +32,7 @@ func Login(user, pass string) bool {
 	}
 }
 
+// Open connection to gorm.db
 func OpenConnection() {
 	db, err = gorm.Open("sqlite3", "./gorm.db")
 	if err != nil {
@@ -37,10 +40,12 @@ func OpenConnection() {
 	}
 }
 
+// Auto migrate
 func AutoMig() {
 	db.AutoMigrate(&Person{})
 }
 
+// Close connection from gorm.db
 func CloseConnection() {
 	db.Close()
 }

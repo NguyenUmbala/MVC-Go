@@ -1,7 +1,7 @@
 package main
 
 import (
-	"log"
+	"fmt"
 	"net/http"
 
 	"./controllers"
@@ -9,13 +9,20 @@ import (
 
 func main() {
 	port := ":8080"
-	//controllers.Login()
-	//controllers.run()
 	http.HandleFunc("/", controllers.Login)
+
 	err := http.ListenAndServe(port, nil) // setting listening port
 	if err != nil {
-		log.Fatal("ListenAndServe: ", err)
+		fmt.Println("ListenAndServe: %v", err)
 	}
+}
+
+func add(n1, n2 int) int {
+	return n1 + n2
+}
+
+func multiply(n1, n2 int) int {
+	return n1 * n2
 }
 
 // func sayhelloName(w http.ResponseWriter, r *http.Request) {

@@ -11,20 +11,32 @@ import (
 func Login(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("method:", r.Method) //get request method
 	if r.Method == "GET" {
-		t, _ := template.ParseFiles("./views/login.html")
+		t, _ := template.ParseFiles("./views/index.html")
 		t.Execute(w, nil)
 	} else {
-		r.ParseForm()
-		// logic part of log in
-		user := r.Form["username"]
-		pass := r.Form["password"]
-		fmt.Println("***********************************************", user)
-		if models.Login(user[0], pass[0]) {
-			fmt.Println("***************Dang nhap thanh cong")
-		} else {
-			fmt.Println("***************Dang nhap that bai")
+		if err := r.ParseForm(); err != nil {
+			fmt.Fprintf(w, "ParseForm() err: %v", err)
+			return
 		}
-		fmt.Println("***********************************************", user)
+		fmt.Fprintf(w, "Data: %v\n", r.PostForm)
+		user := r.FormValue("username")
+		pass := r.FormValue("password")
+		fmt.Fprintf(w, "*****")
+		if models.Login(user, pass) {
+			fmt.Fprintln(w, "Dang nhap thanh cong")
+		} else {
+			fmt.Fprintln(w, "Dang nhap that bai")
+		}
+
+		//r.ParseForm()
+		// user := r.Form["username"]
+		// pass := r.Form["password"]
+		// fmt.Println("***********************************************")
+		// models.Login(user[0], pass[0])
+		// fmt.Println("***********************************************")
+
+		// t, _ := template.ParseFiles("./views/index.html")
+		// t.Execute(w, nil)
 	}
 }
 
